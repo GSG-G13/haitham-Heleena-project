@@ -1,0 +1,84 @@
+:root {
+    --main-font: font-family: 'Darker Grotesque', sans-serif;
+    --width: 100vw;
+    --height: 100vh;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Noto Sans Arabic;
+    direction: rtl;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75) ,rgba(0, 0, 0, 0.75)) ,
+     url(https://img.freepik.com/free-photo/close-up-islamic-new-year-concept_23-2148611670.jpg?size=626&ext=jpg&uid=R97033899&ga=GA1.1.340274384.1679407385&semt=ais);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.head-title{
+padding-top: 40px;
+align-items: center;
+justify-content: center;
+color: #ffffff85;
+font-size: 30px;
+text-align: center;
+}
+.title {
+align-items: center;
+justify-content: center;
+color: #ffffff85;
+font-size: 15px;
+text-align: center;
+}
+
+/* input search style */
+.main-inputForm{
+    margin: auto;
+    text-align: center;
+    margin: 2rem auto;
+}
+.inputForm-inputField{
+    padding: .6rem;
+    width: 40vw;
+    border-radius: 0.3rem;
+}
+.inputForm-searchBtn{
+    padding: 0.6rem;
+    background: #ffffff85;
+    border-radius: .3rem;
+    margin-left: .5rem;
+    border: 1px solid #d6a7a7;
+    transition: .8s;
+}
+.inputForm-searchBtn:hover{
+    transform: scale(1.1) rotate(1deg);
+    background: #59494985;
+    color: white;
+    border:none;
+}
+.head-description{
+    padding-top: 20px;
+align-items: center;
+justify-content: center;
+color: #e2e2e285;
+font-size: 15px;
+text-align: center;
+
+}
+
+/* main result div  */
+ 
+.main-result{
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #212020;
+    min-height: 40vh;
+    max-width: 60vw;
+}
