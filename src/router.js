@@ -11,10 +11,11 @@ const content_types = {
   ".json": "application/json",
   ".ico": "image/vnd.microsoft.icon",
 };
+// xhr send req, 
+// req recieve to 
 
 const router = (request, response) => {
   const url = request.url;
-  console.log("URL: ", url);
   function getPath(
     wantedFile,
     folder1 = "",
@@ -43,17 +44,17 @@ const router = (request, response) => {
     }
     return path.join(__dirname, wantedFile);
   }
-  function writeFile(path, results) {
-    fs.writeFile(path, JSON.stringify(results), (error) => {
-      if (error) {
-        console.log("error:", error);
-        response.writeHead(500, { "Content-Type": "text/html" });
-        response.end("<h1>Internal Server Error</h1>");
-      } else {
-        readFile(path);
-      }
-    });
-  }
+  // function writeFile(path, results) {
+  //   fs.writeFile(path, JSON.stringify(results), (error) => {
+  //     if (error) {
+  //       console.log("error:", error);
+  //       response.writeHead(500, { "Content-Type": "text/html" });
+  //       response.end("<h1>Internal Server Error</h1>");
+  //     } else {
+  //       readFile(path);
+  //     }
+  //   });
+  // }
   function readFile(completedPath) {
     const extname = path.extname(completedPath);
     fs.readFile(completedPath, "utf8", (err, file) => {
@@ -66,15 +67,14 @@ const router = (request, response) => {
       }
     });
   }
-  function sendRequest(id) {
+  function sendRequest(response, id) {
     axios
       .get(
         `https://api.codetabs.com/v1/proxy?quest=http://api.alquran.cloud/v1/surah/${id}/ar.alafasy`
       )
       // Show response data
       .then((res) => {
-        writeFile(getPath("response.json"), res.data);
-        console.log(res.data);
+        response.end(JSON.stringify(res.data.data.ayahs));
       })
       .catch((err) => console.log(err));
   }
@@ -93,10 +93,12 @@ const router = (request, response) => {
         element.search_key.includes(search)
       );
     }
-    writeFile(getPath("results.json"));
+    response.end(JSON.stringify(results));
+    // writeFile(getPath("results.json",results));
+
   } else if (url.split("=")[0] === "/api/selected") {
     let selected_id = url.split("=")[1];
-    sendRequest(selected_id);
+    sendRequest(response, selected_id);
   }
 
   //   else if (url === "/favicon") {
