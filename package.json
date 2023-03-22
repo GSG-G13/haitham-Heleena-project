@@ -1,0 +1,23 @@
+{
+  "name": "haitham-heleena-project",
+  "version": "1.0.0",
+  "description": "Quran application with auto complete",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "jest",
+    "dev":"nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GSG-G13/haitham-Heleena-project.git"
+  },
+  "author": "Haitham & Heleena",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GSG-G13/haitham-Heleena-project/issues"
+  },
+  "homepage": "https://github.com/GSG-G13/haitham-Heleena-project#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
