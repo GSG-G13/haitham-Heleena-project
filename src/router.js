@@ -1,6 +1,9 @@
 const fs = require("fs");
+const { request } = require("https");
 const path = require("path");
 const surahs = require("./surahs.json");
+const axios = require("axios");
+let results = [];
 const content_types = {
   ".html": "text/html",
   ".css": "text/css",
@@ -12,7 +15,6 @@ const content_types = {
 const router = (request, response) => {
   const url = request.url;
   console.log("URL: ", url);
-
   function getPath(
     wantedFile,
     folder1 = "",
@@ -41,7 +43,17 @@ const router = (request, response) => {
     }
     return path.join(__dirname, wantedFile);
   }
-
+  function writeFile(path, results) {
+    fs.writeFile(path, JSON.stringify(results), (error) => {
+      if (error) {
+        console.log("error:", error);
+        response.writeHead(500, { "Content-Type": "text/html" });
+        response.end("<h1>Internal Server Error</h1>");
+      } else {
+        readFile(path);
+      }
+    });
+  }
   function readFile(completedPath) {
     const extname = path.extname(completedPath);
     fs.readFile(completedPath, "utf8", (err, file) => {
@@ -54,7 +66,18 @@ const router = (request, response) => {
       }
     });
   }
-
+  function sendRequest(id) {
+    axios
+      .get(
+        `https://api.codetabs.com/v1/proxy?quest=http://api.alquran.cloud/v1/surah/${id}/ar.alafasy`
+      )
+      // Show response data
+      .then((res) => {
+        writeFile(getPath("response.json"), res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  }
   if (url === "/") {
     readFile(getPath("index.html", "..", "public"));
   } else if (url === "/scripts/main.js") {
@@ -64,22 +87,18 @@ const router = (request, response) => {
   } else if (url.split("=")[0] === "/api/search") {
     let search = url.split("=")[1];
     search = decodeURIComponent(search);
-    let results = [];
+
     if (search) {
       results = surahs.data.filter((element) =>
         element.search_key.includes(search)
       );
     }
-    fs.writeFile(getPath("results.json"), JSON.stringify(results), (error) => {
-      if (error) {
-        console.log("error:", error);
-        response.writeHead(500, { "Content-Type": "text/html" });
-        response.end("<h1>Internal Server Error</h1>");
-      } else {
-        readFile(getPath("results.json"));
-      }
-    });
+    writeFile(getPath("results.json"));
+  } else if (url.split("=")[0] === "/api/selected") {
+    let selected_id = url.split("=")[1];
+    sendRequest(selected_id);
   }
+
   //   else if (url === "/favicon") {
   //     readFile(getPath("logo.ico", "..", "public", "imgas"));
   //   }
