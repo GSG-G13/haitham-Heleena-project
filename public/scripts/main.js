@@ -1,33 +1,34 @@
-function createDom (arr){
-    const surahDiv = document.createElement("div");
-    
+function createlist (arr){
+    const listOption = document.getElementById('listOption');
+    listOption.textContent = "";
     arr.forEach(element => {
-        const surahText = document.createElement("h4");
-        
+        const option = document.createElement("option");
+        option.setAttribute("value",element.search_key);
+        listOption.appendChild(option);
     });
 }
 
-function fetch(search_key) {
+function fetch(path,cb) {
   const xhr = new XMLHttpRequest();
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         const data = JSON.parse(xhr.responseText);
- 
+        cb(data);
         console.log(data);
       } else {
         console.error(xhr.responseText);
       }
     }
   };
-  xhr.open("GET", `/api/search=${search_key}`, true);
+  xhr.open("GET", path, true);
   xhr.send();
 }
 
 // here is the dom sending requests
-const search_input = document.getElementById("search_input");
+const search_input = document.getElementById("inputField");
 
 search_input.addEventListener("keyup", function (event) {
-  fetch(search_input.value);
+  fetch(`/api/search=${search_input.value}`,createlist);
   console.log(search_input.value);
 });
