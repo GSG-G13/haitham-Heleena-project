@@ -81,4 +81,5 @@ text-align: center;
     border: 1px solid #212020;
     min-height: 40vh;
     max-width: 60vw;
+    display: none;
 }
