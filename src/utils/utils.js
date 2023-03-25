@@ -1,27 +1,9 @@
 const { join } = require("path");
 const fs = require("fs");
+
 const axios = require("axios");
-const mime_type = require("mime-types");
 const search = require("./search");
 
-function getPath(wantedFile, ...folders) {
-  return join(__dirname, "..", "..", ...folders, wantedFile);
-}
-
-function readFile(response, completedPath) {
-  fs.readFile(completedPath, "utf8", (err, file) => {
-    if (err) {
-      response.writeHead(500, { "content-type": "text/html" });
-      response.write("<h1> Internal Server Error! </h1>");
-      response.end();
-    } else {
-      response.writeHead(200, {
-        "content-type": mime_type.lookup(completedPath),
-      });
-      response.end(file);
-    }
-  });
-}
 function sendRequest(response, id) {
   axios
     .get(
@@ -51,8 +33,6 @@ const searchHandler = (response, endpoint) => {
   });
 };
 module.exports = {
-  getPath,
-  readFile,
   sendRequest,
   searchHandler,
 };
